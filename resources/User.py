@@ -38,7 +38,9 @@ class SignIn(Resource):
         user = UserModel.find_by_username(username)
         if user == None:
             return {"success": False, "error": "USERNAME_NOT_FOUND"}, 409
-
+        print(str(user.password))
+        print(str(user.password.encode()))
+        print(str(body.get("password").encode()))
         if bcrypt.checkpw(body.get("password").encode(), user.password):
             dt = datetime.utcnow() + timedelta(hours=9)
             token = jwt.encode({"exp": dt, "userId": user.id, "username": username }, SECRETE)
